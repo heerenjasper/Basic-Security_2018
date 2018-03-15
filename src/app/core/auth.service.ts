@@ -54,7 +54,6 @@ export class AuthService {
       })
   }
 
-
   private updateUserData(user) {
     // Sets user data to firestore on login
 
@@ -68,9 +67,7 @@ export class AuthService {
     }
 
     return userRef.set(data, { merge: true })
-
   }
-
 
   signOut() {
     this.afAuth.auth.signOut().then(() => {

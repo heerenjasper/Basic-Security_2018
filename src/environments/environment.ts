@@ -6,11 +6,11 @@
 export const environment = {
   production: false,
   firebase: {
-    apiKey: "AIzaSyB70mqJKkEKGqieFg7lTF3yzgUW3o-cv0M",
-    authDomain: "jos-onkundig-zeikspel.firebaseapp.com",
-    databaseURL: "https://jos-onkundig-zeikspel.firebaseio.com",
-    projectId: "jos-onkundig-zeikspel",
-    storageBucket: "jos-onkundig-zeikspel.appspot.com",
-    messagingSenderId: "759923437141"
+    apiKey: "AIzaSyCAtDOGWoNUZ_pLPE9Sy_WbGW0g5JYzte0",
+    authDomain: "basic-security.firebaseapp.com",
+    databaseURL: "https://basic-security.firebaseio.com",
+    projectId: "basic-security",
+    storageBucket: "basic-security.appspot.com",
+    messagingSenderId: "403057872782"
   }
 };
