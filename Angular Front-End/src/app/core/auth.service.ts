@@ -1,43 +1,19 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
-import * as firebase from 'firebase/app';
 import { AngularFireAuth } from 'angularfire2/auth';
-import { AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firestore';
+import * as firebase from 'firebase/app';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/switchMap'
 
-interface User {
-  uid: string;
-  email: string;
-  photoURL?: string;
-  displayName?: string;
-  favoriteColor?: string;
-  first_name?: string;
-  last_name?: string;
-  password?: string;
-}
-
-
 @Injectable()
 export class AuthService {
 
-  user: Observable<User>;
+  public user: Observable<firebase.User>;
 
-  constructor(private afAuth: AngularFireAuth,
-              private afs: AngularFirestore,
-              private router: Router) {
-
-      //// Get auth data, then get firestore user document || null
-      this.user = this.afAuth.authState
-        .switchMap(user => {
-          if (user) {
-            return this.afs.doc<User>(`users/${user.uid}`).valueChanges()
-          } else {
-            return Observable.of(null)
-          }
-        })
+  constructor(private afAuth: AngularFireAuth, private router: Router) {
+      this.user = this.afAuth.authState;
   }
 
   Register(email, password) {
@@ -55,4 +31,5 @@ export class AuthService {
         this.router.navigate(['/']);
     });
   }
+
 }
