@@ -1,54 +1,25 @@
-<!-- Main -->
-<div *ngIf="auth.user | async; then authenticated else guest">
-    <!-- template will replace this div -->
-</div>
-
-
-<!-- User NOT logged in -->
-<ng-template #guest>
 <!-- Login form -->
 <div class="container align-middle">
-<form>
+<form [formGroup]="signinForm">
     <p class="h5 text-center mb-4">Aanmelden</p>
 
-    <div class="md-form">
+    <div class="md-form form-group">
         <i class="fa fa-envelope prefix grey-text"></i>
-        <input type="text" id="defaultForm-email" class="form-control" mdbActive>
-        <label for="defaultForm-email">Email</label>
+        <input formControlName="email" type="text" id="inputEmail" class="form-control" mdbActive>
+        <label for="inputEmail">Email</label>
     </div>
 
-    <div class="md-form">
+    <div class="md-form form-group">
         <i class="fa fa-lock prefix grey-text"></i>
-        <input type="password" id="defaultForm-pass" class="form-control" mdbActive>
-        <label for="defaultForm-pass">Wachtwoord</label>
+        <input formControlName="password" type="password" id="inputPassword" class="form-control" mdbActive>
+        <label for="inputPassword">Wachtwoord</label>
     </div>
 
     <div class="text-center">
-        <button class="btn btn-default blue" mdbRippleRadius (click)="auth.googleLogin()">Login
+        <button class="btn btn-default blue" mdbRippleRadius (click)="login()">Login
             <i class="fa fa-google"></i>
         </button>
         
     </div>
 </form>
 </div>
-<!-- Login form -->
-
-</ng-template>
-
-
-<!-- User logged in -->
-<ng-template #authenticated>
-<div *ngIf="auth.user | async as user">
-    <h3>Howdy, {{ user.displayName }}</h3>
-    <img  [src]="user.photoURL">
-    <p>UID: {{ user.uid }}</p>
-    <p>Favorite Color: {{ user?.favoriteColor }} </p>
-    <button (click)="auth.signOut()">Logout</button>
-</div>
-</ng-template>
-
-<!-- /.Main -->
-        
-            
-            
-

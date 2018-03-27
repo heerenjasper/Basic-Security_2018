@@ -14,6 +14,9 @@ interface User {
   photoURL?: string;
   displayName?: string;
   favoriteColor?: string;
+  first_name?: string;
+  last_name?: string;
+  password?: string;
 }
 
 
@@ -37,36 +40,14 @@ export class AuthService {
         })
   }
 
-  facebookLogin() {
-    const provider = new firebase.auth.FacebookAuthProvider();
-    return this.oAuthLogin(provider);
+  Register(email, password) {
+    this.afAuth.auth.createUserWithEmailAndPassword(email, password);
   }
 
-  googleLogin() {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    return this.oAuthLogin(provider);
-  }
-
-  private oAuthLogin(provider) {
-    return this.afAuth.auth.signInWithPopup(provider)
-      .then((credential) => {
-        this.updateUserData(credential.user)
-      })
-  }
-
-  private updateUserData(user) {
-    // Sets user data to firestore on login
-
-    const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${user.uid}`);
-
-    const data: User = {
-      uid: user.uid,
-      email: user.email,
-      displayName: user.displayName,
-      photoURL: user.photoURL
-    }
-
-    return userRef.set(data, { merge: true })
+  Login(email, password) : Observable<any> {
+    return Observable.fromPromise(
+      this.afAuth.auth.signInWithEmailAndPassword(email, password)
+    );
   }
 
   signOut() {
