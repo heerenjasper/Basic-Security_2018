@@ -1,14 +1,13 @@
-.message{
-    width:55%;
-    margin-right:2%;
+.element1{
     float: left;
 }
 
-.button {
-    width:42%;
-    float: left;
+.element2{
+    float: right;
 }
 
-.clearfix{
-    clear:both
+.chatbox{
+    width: 800px;
+    height: 650px;
+    margin-top: 50px;
 }

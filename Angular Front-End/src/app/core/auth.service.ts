@@ -26,6 +26,10 @@ export class AuthService {
     );
   }
 
+  isAuthenticated() : Observable<boolean> {
+    return this.user.map(user => user && user.uid !== undefined);
+  }
+
   signOut() {
     this.afAuth.auth.signOut().then(() => {
         this.router.navigate(['/']);
