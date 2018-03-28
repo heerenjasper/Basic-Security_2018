@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { MDBBootstrapModule } from './typescripts/free';
 import { AgmCoreModule } from '@agm/core';
@@ -13,17 +13,22 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { appRoutes } from "../routes";
 import { RouterModule } from "@angular/router";
 import { NavbarComponent } from './navbar/navbar.component';
+import { ChatComponent } from './chat/chat.component';
+import { MessagesComponent } from './messages/messages.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     UserProfileComponent,
-    NavbarComponent
+    NavbarComponent,
+    ChatComponent,
+    MessagesComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpModule,
     RouterModule.forRoot(appRoutes),
     MDBBootstrapModule.forRoot(),

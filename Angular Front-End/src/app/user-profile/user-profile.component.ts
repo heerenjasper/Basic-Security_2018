@@ -16,6 +16,8 @@ export class UserProfileComponent implements OnInit {
   }
 
   public signinForm : FormGroup;
+  public user$ = this.auth.user;
+
   constructor(private formBuilder: FormBuilder, public auth: AuthService, private router: Router) {
 
     this.signinForm = this.formBuilder.group({
@@ -25,11 +27,15 @@ export class UserProfileComponent implements OnInit {
 
   }
 
+  register() {
+    this.auth.Register("jasper_heeren@hotmail.com", "servermaken");
+  }
+
   login() {
-    const inputValue = this.signinForm.value();
+    const inputValue = this.signinForm.value;
     this.auth.Login(inputValue.email, inputValue.password)
       .subscribe(
-        success => this.router.navigate(['/chat']),
+        _success => this.router.navigate(['/chat']),
         error => alert(error)
       );
   }

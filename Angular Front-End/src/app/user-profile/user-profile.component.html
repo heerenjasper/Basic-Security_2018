@@ -1,5 +1,9 @@
 <!-- Login form -->
+<div class="z-depth center" flex="50">
 <div class="container align-middle">
+
+<!--{{ user$ | async | json }}-->
+
 <form [formGroup]="signinForm">
     <p class="h5 text-center mb-4">Aanmelden</p>
 
@@ -19,7 +23,10 @@
         <button class="btn btn-default blue" mdbRippleRadius (click)="login()">Login
             <i class="fa fa-google"></i>
         </button>
+        <button class="btn btn-default blue" mdbRippleRadius (click)="register()">Register
+            </button>
         
     </div>
 </form>
+</div>
 </div>
