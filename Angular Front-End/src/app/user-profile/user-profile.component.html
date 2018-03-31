@@ -1,32 +1,38 @@
-<!-- Login form -->
-<div class="z-depth center" flex="50">
-<div class="container align-middle">
-
-<!--{{ user$ | async | json }}-->
-
-<form [formGroup]="signinForm">
-    <p class="h5 text-center mb-4">Aanmelden</p>
-
-    <div class="md-form form-group">
-        <i class="fa fa-envelope prefix grey-text"></i>
-        <input formControlName="email" type="text" id="inputEmail" class="form-control" mdbActive>
-        <label for="inputEmail">Email</label>
-    </div>
-
-    <div class="md-form form-group">
-        <i class="fa fa-lock prefix grey-text"></i>
-        <input formControlName="password" type="password" id="inputPassword" class="form-control" mdbActive>
-        <label for="inputPassword">Wachtwoord</label>
-    </div>
-
-    <div class="text-center">
-        <button class="btn btn-default blue" mdbRippleRadius (click)="login()">Login
-            <i class="fa fa-google"></i>
-        </button>
-        <button class="btn btn-default blue" mdbRippleRadius (click)="register()">Register
-            </button>
+<ng-container *ngIf="(auth.user | async) || {} as user">
         
-    </div>
-</form>
-</div>
-</div>
+<!--Register form-->
+<form [formGroup]="signupForm" class="signup" *ngIf="!user.uid" (ngSubmit)="signup()">
+        <p class="h5 text-center mb-4">Sign up</p>
+    
+        <div class="md-form">
+            <i class="fa fa-envelope prefix grey-text"></i>
+            <input type="email" id="blueForm-name" class="form-control" formControlName="email" mdbActive>
+            <label for="blueForm-name">Email</label>
+        </div>
+    
+        <div class="md-form">
+            <i class="fa fa-lock prefix grey-text"></i>
+            <input type="password" id="blueForm-pass" class="form-control" formControlName="password" required mdbActive>
+            <label for="blueForm-pass">Your Password</label>
+        </div>
+
+        <div class="md-form">
+                <i class="fa fa-user prefix grey-text"></i>
+                <input type="text" id="blueForm-displayName" class="form-control" formControlName="displayName" mdbActive>
+                <label for="blueForm-displayName">Display Name</label>
+        </div>
+
+        <div class="md-form">
+                <i class="fa fa-image prefix grey-text"></i>
+                <input type="text" id="blueForm-image" class="form-control" formControlName="image" mdbActive>
+                <label for="blueForm-image">Image Url</label>
+        </div>
+    
+        <div class="text-center">
+            <button type="submit" [disabled]="!signupForm.valid" class="btn btn-blue waves-light" mdbRippleRadius>Sign up</button>
+        </div>
+    
+    </form>
+    <!--/Register form-->
+          
+</ng-container>

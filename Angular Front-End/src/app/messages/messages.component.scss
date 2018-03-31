@@ -6,8 +6,22 @@
     float: right;
 }
 
+.message{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%
+}
+
 .chatbox{
     width: 800px;
     height: 650px;
     margin-top: 50px;
+    display: inline-block;
+    position: relative;
+}
+
+.picture {
+    width: 35px;
+    height: 35px;
 }

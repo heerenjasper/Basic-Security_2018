@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../core/auth.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+//import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'user-profile',
@@ -10,34 +10,44 @@ import { Router } from '@angular/router';
 })
 export class UserProfileComponent implements OnInit {
 
+  signupForm: FormGroup;
+  detailForm: FormGroup;
 
-  ngOnInit(): void {
-    throw new Error("Method not implemented.");
-  }
+  constructor(public fb: FormBuilder, public auth: AuthService) { }
 
-  public signinForm : FormGroup;
-  public user$ = this.auth.user;
+  ngOnInit() {
 
-  constructor(private formBuilder: FormBuilder, public auth: AuthService, private router: Router) {
-
-    this.signinForm = this.formBuilder.group({
-      email: ['', Validators.required],
-      password: ['', Validators.required]
+    // First Step
+    this.signupForm = this.fb.group({
+      'email': ['', [
+        Validators.required,
+        Validators.email
+        ]
+      ],
+      'password': ['', [
+        Validators.required
+        ]
+      ],
+      'image': ['', [
+        Validators.required
+        ]
+      ],
+      'displayName': ['', [
+        Validators.required
+        ]
+      ],
     });
-
+    
   }
 
-  register() {
-    this.auth.Register("jasper_heeren@hotmail.com", "servermaken");
-  }
+  // Using getters will make your code look pretty
+  get email() { return this.signupForm.get('email') }
+  get password() { return this.signupForm.get('password') }
+  get image() { return this.signupForm.get('image') }
+  get displayName() { return this.signupForm.get('displayName') }
 
-  login() {
-    const inputValue = this.signinForm.value;
-    this.auth.Login(inputValue.email, inputValue.password)
-      .subscribe(
-        _success => this.router.navigate(['/chat']),
-        error => alert(error)
-      );
+  // Step 1
+  signup() {
+    return this.auth.emailSignUp(this.email.value, this.password.value, this.image.value, this.displayName.value);
   }
-
 }

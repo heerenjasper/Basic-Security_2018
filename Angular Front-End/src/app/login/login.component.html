@@ -1,0 +1,47 @@
+<div *ngIf="auth.user | async; then authenticated else guest">
+    <!-- template will replace this div -->
+</div>
+
+
+<!-- User NOT logged in -->
+<ng-template #guest>
+<!-- Login form -->
+<form [formGroup]="loginForm" class="login" (ngSubmit)="login()">
+    <p class="h5 text-center mb-4">Sign in</p>
+
+    <div class="md-form">
+        <i class="fa fa-envelope prefix grey-text"></i>
+        <input type="text" id="defaultForm-email" formControlName="email" class="form-control" mdbActive>
+        <label for="defaultForm-email">Email</label>
+    </div>
+
+    <div class="md-form">
+        <i class="fa fa-lock prefix grey-text"></i>
+        <input type="password" id="defaultForm-pass" class="form-control" formControlName="password" required mdbActive>
+        <label for="defaultForm-pass">Password</label>
+    </div>
+
+    <div class="text-center">
+        <button type="submit" class="btn btn-blue waves-light" mdbRippleRadius>Login</button>
+        or
+        <a [routerLink]="['/', 'registration']" mdbRippleRadius>Register an account</a>
+    </div>
+</form>
+<!-- Login form -->
+</ng-template>
+
+
+<!-- User logged in -->
+<ng-template #authenticated>
+<div *ngIf="auth.user | async as user">
+    <div class="text-center">
+        <h3>Hello, {{ user.displayName }}</h3>
+    </div>
+    <div class="text-center">
+        <img class="rounded-circle picture" [src]="user.photoURL">
+    </div>
+    <div class="text-center">
+        <button type="button" class="btn btn-danger waves-light" mdbRippleRadius>Chat with other people!</button>
+    </div>
+</div>
+</ng-template>

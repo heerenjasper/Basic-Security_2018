@@ -15,6 +15,9 @@ import { RouterModule } from "@angular/router";
 import { NavbarComponent } from './navbar/navbar.component';
 import { ChatComponent } from './chat/chat.component';
 import { MessagesComponent } from './messages/messages.component';
+import { ContactsComponent } from './contacts/contacts.component';
+import { LoginComponent } from './login/login.component';
+import { RegistrationComponent } from './registration/registration.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +25,10 @@ import { MessagesComponent } from './messages/messages.component';
     UserProfileComponent,
     NavbarComponent,
     ChatComponent,
-    MessagesComponent
+    MessagesComponent,
+    ContactsComponent,
+    LoginComponent,
+    RegistrationComponent
   ],
   imports: [
     BrowserModule,

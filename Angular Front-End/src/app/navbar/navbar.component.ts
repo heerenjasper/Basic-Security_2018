@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../core/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -10,20 +11,23 @@ export class NavbarComponent implements OnInit {
 
   public isLoggedIn;
 
-  constructor(private auth : AuthService) { 
+  ngOnInit(): void {
+  }
 
+  constructor(private auth: AuthService, private router: Router) {
     this.auth.isAuthenticated()
       .subscribe(
-        result => this.isLoggedIn = result
-      )
-
+        success => this.isLoggedIn = success
+      );
   }
 
-  logout() {
-    this.auth.signOut()
+  signOut() {
+    this.auth.signOut();
+    this.router.navigate(['/']);
   }
 
-  ngOnInit() {
+  goChat() {
+    this.router.navigate(['/chat']);
   }
 
 }

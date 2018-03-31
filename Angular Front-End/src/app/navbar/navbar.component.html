@@ -8,10 +8,10 @@
               <a *ngIf="!isLoggedIn" class="nav-link">Login <span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item active waves-light" mdbRippleRadius>
-                <a *ngIf="isLoggedIn" (click)="logout()" class="nav-link">Logout</a>
+                <a *ngIf="isLoggedIn" (click)="signOut()" class="nav-link">Logout</a>
          </li>
           <li class="nav-item waves-light" mdbRippleRadius>
-              <a [RouterLink]="['/chat']" class="nav-link">Chat</a>
+              <a *ngIf="isLoggedIn" class="nav-link" (click)="goChat()">Chat</a>
           </li>
       </ul>
       <ul class="navbar-nav nav-flex-icons">
