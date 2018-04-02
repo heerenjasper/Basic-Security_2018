@@ -41,7 +41,7 @@
         <img class="rounded-circle picture" [src]="user.photoURL">
     </div>
     <div class="text-center">
-        <button type="button" class="btn btn-danger waves-light" mdbRippleRadius>Chat with other people!</button>
+        <button type="button" class="btn btn-danger waves-light" (click)="goToChat()" mdbRippleRadius>Chat with other people!</button>
     </div>
 </div>
 </ng-template>

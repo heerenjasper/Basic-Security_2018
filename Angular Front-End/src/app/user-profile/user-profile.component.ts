@@ -29,7 +29,6 @@ export class UserProfileComponent implements OnInit {
         ]
       ],
       'image': ['', [
-        Validators.required
         ]
       ],
       'displayName': ['', [

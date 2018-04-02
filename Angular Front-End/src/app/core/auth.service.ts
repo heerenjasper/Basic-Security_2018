@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firestore';
-import { NotifyService } from './notify.service';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/switchMap';
@@ -22,8 +21,7 @@ export class AuthService {
 
   constructor(private afAuth: AngularFireAuth,
               private afs: AngularFirestore,
-              private router: Router,
-              private notify: NotifyService) {
+              private router: Router) {
 
       // Define the user observable
       this.user = this.afAuth.authState
@@ -45,6 +43,9 @@ export class AuthService {
       .then(user => {
         console.log(user);
         this.router.navigate(['/']);
+        if (imageUrl == "") {
+          imageUrl = "http://lasenegalaise.com/forums/styles/canvas/theme/images/no_avatar.jpg"
+        }
         return this.setUserDoc(user, imageUrl, displayName) // create initial user document
       })
       .catch(error => this.handleError(error));
@@ -74,7 +75,7 @@ export class AuthService {
   // If error, console log and notify user
   private handleError(error) {
     console.error(error)
-    this.notify.update(error.message, 'error')
+    alert(error.message)
   }
 
   // Sets user data to firestore after succesful login
