@@ -38,7 +38,7 @@ export class LoginComponent implements OnInit {
       console.log("TEST");
       this.auth.emailLogin(this.email.value, this.password.value)
       .subscribe(
-        _success => alert("successfully logged in."),
+        _success => alert("Successfully logged in."),
         error => alert(error)
       );
   }
