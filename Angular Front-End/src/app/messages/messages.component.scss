@@ -10,15 +10,20 @@
     position: absolute;
     bottom: 0;
     left: 0;
-    width: 100%
+    width: 100%;
+    padding-left: 1em;
+    padding-right: 10em;
 }
 
-.chatbox{
-    width: 800px;
-    height: 650px;
-    margin-top: 50px;
-    display: inline-block;
-    position: relative;
+#btn-send-message {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+.chatbox {
+    min-height: 100%;
+    max-height: 100vh;
 }
 
 .picture {

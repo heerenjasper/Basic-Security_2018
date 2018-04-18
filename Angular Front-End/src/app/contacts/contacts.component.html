@@ -3,7 +3,7 @@
   <h3 class="card-header primary-color white-text">Contacts</h3>
   <div class="card-body">
       <ul class="list-group">
-          <li *ngFor="let user of users | async" class="list-group-item d-flex justify-content-between align-items-center">
+          <li id="contact-list-item" *ngFor="let user of users | async" class="list-group-item d-flex justify-content-between align-items-center">
               <div class="avatar">
                 <img src="{{ user.photoURL }}" class="rounded-circle picture">
                 <div class="inline">{{ user.displayName }}</div>
