@@ -1,4 +1,9 @@
-.main-div{
+.main-div {
     height: 100vh;
-    background-image: url(../../img/hypnotize.png);
+}
+
+body {
+    background-image: url('../../img/hypnotize.png');
+    height: 100vh;
+    width: 100%;
 }
