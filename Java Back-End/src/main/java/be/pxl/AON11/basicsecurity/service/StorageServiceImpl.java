@@ -39,6 +39,10 @@ public class StorageServiceImpl {
         }
     }
 
+    public String createFullPath(String path, String filename) {
+        return Paths.get(fullPath.toString(), path, filename).toString();
+    }
+
     public Resource loadFile(String filename) {
         try {
             Path file = Paths.get("src/main/resources").resolve(filename);

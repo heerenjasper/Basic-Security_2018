@@ -3,6 +3,7 @@ package be.pxl.AON11.basicsecurity.controller;
 import be.pxl.AON11.basicsecurity.model.File;
 import be.pxl.AON11.basicsecurity.service.FileService;
 import be.pxl.AON11.basicsecurity.service.StorageServiceImpl;
+import be.pxl.AON11.basicsecurity.utils.Encryptor;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,6 +29,7 @@ public class FileController {
     @Autowired
     public FileController(FileService fileService) {
         this.fileService = fileService;
+        this.storageService = new StorageServiceImpl();
     }
 
     @GetMapping("/{fileId}")
@@ -42,7 +44,6 @@ public class FileController {
     }
 
     @PostMapping("/")
-    @ResponseBody
     public ResponseEntity<File> createFile(@RequestParam("file") MultipartFile file) {
 
         // Check if file with same file number already exists
@@ -55,7 +56,7 @@ public class FileController {
         InputStream inputStream = null;
         OutputStream outputStream = null;
         String fileName = file.getOriginalFilename();
-        java.io.File newFile = new java.io.File("encoded_files/" );
+        java.io.File newFile = new java.io.File("files/" );
 
         return new ResponseEntity<File>(fileForDatabase, HttpStatus.CREATED);
     }
@@ -85,4 +86,24 @@ public class FileController {
         }
 
     }
+
+    @PostMapping("/encrypt/")
+    public ResponseEntity<File> encryptFile(@RequestParam("file") MultipartFile file, @RequestPart String message) {
+
+        // Save file
+        storageService.store(file, "basic-files/", "file_1");
+
+        // Encrypt file
+        String fullPath = storageService.createFullPath("basic-files/", "file_1");
+        String output = storageService.createFullPath("encoded-files/", "file_1");
+        Encryptor.encrypt(message, fullPath, output);
+
+        File responseFile = new File();
+        responseFile.setExtension(FilenameUtils.getExtension(file.getOriginalFilename()));
+        responseFile.setHref("resources/encoded-files/file_1" + FilenameUtils.getExtension(file.getOriginalFilename()));
+        fileService.saveFile(responseFile);
+
+        return new ResponseEntity<File>(responseFile, HttpStatus.OK);
+    }
+
 }
