@@ -8,6 +8,7 @@ interface User {
   uid: string;
   email: string;
   photoURL: string;
+  displayName: string;
 }
 
 @Component({
@@ -39,9 +40,14 @@ export class ContactsComponent implements OnInit {
     this.usersCollection.add(user);
   }
 
+<<<<<<< Updated upstream
   selectChat(user: User) {
     console.log(user.photoURL);
     this.selectedUser = user;
+=======
+  getUser(email) {
+    //nothing yet
+>>>>>>> Stashed changes
   }
 
 }
