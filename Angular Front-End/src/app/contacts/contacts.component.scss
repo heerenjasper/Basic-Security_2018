@@ -3,17 +3,6 @@
     height: 75px;
 }
 
-<<<<<<< Updated upstream
-=======
-.contacts {
-    margin-top: 50px;
-    margin-right: 10px;
-    width: 350px;
-    height: 650px;
-    float: left;
-}
-
->>>>>>> Stashed changes
 .inline {
     display: inline-block;
 }
@@ -26,7 +15,6 @@ ul {
     float: left;
 }
 
-<<<<<<< Updated upstream
 #contact-list-item:hover {
     background-color: rgba($color: #575757, $alpha: .3);
     cursor: pointer;
@@ -34,9 +22,9 @@ ul {
 
 #contact-list-item:active {
     background-color: rgba($color: #575757, $alpha: .1);
-=======
+}
+
 .body {
     max-height:600px;
     overflow-y:scroll;
->>>>>>> Stashed changes
 }

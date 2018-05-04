@@ -1,4 +1,4 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input} from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { Observable } from 'rxjs/Observable';
 import { AuthService } from '../core/auth.service';
@@ -21,7 +21,7 @@ export class ContactsComponent implements OnInit {
   private usersCollection: AngularFirestoreCollection<User>;
   users: Observable<User[]>;
   currentUser: User;
-  selectedUser: User;
+  @Output() selectedUserEvent = new EventEmitter<User>();
 
   constructor(private afs: AngularFirestore,
   private authService: AuthService) { 
@@ -30,7 +30,6 @@ export class ContactsComponent implements OnInit {
     this.users = this.usersCollection.valueChanges();
 
   }
-
   
   ngOnInit() {    
     this.authService.user.subscribe(user => this.currentUser = user);
@@ -40,14 +39,11 @@ export class ContactsComponent implements OnInit {
     this.usersCollection.add(user);
   }
 
-<<<<<<< Updated upstream
   selectChat(user: User) {
-    console.log(user.photoURL);
-    this.selectedUser = user;
-=======
-  getUser(email) {
-    //nothing yet
->>>>>>> Stashed changes
+    this.selectedUserEvent.emit(user);
+    console.log(user.displayName);
   }
+
+  
 
 }

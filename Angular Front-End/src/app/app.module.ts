@@ -18,6 +18,8 @@ import { MessagesComponent } from './messages/messages.component';
 import { ContactsComponent } from './contacts/contacts.component';
 import { LoginComponent } from './login/login.component';
 import { RegistrationComponent } from './registration/registration.component';
+import { MessageService } from './services/message.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -36,6 +38,7 @@ import { RegistrationComponent } from './registration/registration.component';
     FormsModule,
     ReactiveFormsModule,
     HttpModule,
+    HttpClientModule,
     RouterModule.forRoot(appRoutes),
     MDBBootstrapModule.forRoot(),
     AgmCoreModule.forRoot({
@@ -45,7 +48,9 @@ import { RegistrationComponent } from './registration/registration.component';
     AngularFireModule.initializeApp(environment.firebase),
     CoreModule
   ],
-  providers: [],
+  providers: [
+    MessageService
+  ],
   bootstrap: [AppComponent],
   schemas:      [ NO_ERRORS_SCHEMA ]
 })
