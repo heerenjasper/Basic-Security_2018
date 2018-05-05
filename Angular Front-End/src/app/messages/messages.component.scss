@@ -1,26 +1,3 @@
-.element1{
-    float: left;
-}
-
-.element2{
-    float: right;
-}
-
-.message{
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    padding-left: 1em;
-    padding-right: 10em;
-}
-
-#btn-send-message {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-}
-
 .chatbox {
     min-height: 85vh;
     max-height: 85vh;
@@ -29,4 +6,60 @@
 .picture {
     width: 35px;
     height: 35px;
+}
+
+#btn-send-message {
+    margin-left: -1.75rem !important;
+    margin-top: 1.21rem !important;
+}
+
+#message-list {
+    list-style: none;
+}
+
+.speech-bubble-left {
+	position: relative;
+	background: #f06b78;
+    border-radius: .4em;
+    max-width: 60%;
+    padding: 1em;
+    float: left;
+}
+
+.speech-bubble-left:after {
+	content: '';
+	position: absolute;
+	left: 0;
+	top: 50%;
+	width: 0;
+	height: 0;
+	border: 0.625em solid transparent;
+	border-right-color: #f06b78;
+	border-left: 0;
+	margin-top: -0.625em;
+	margin-left: -0.625em;
+}
+
+.speech-bubble-right {
+	position: relative;
+	background: #9292fc;
+    border-radius: .4em;
+    max-width: 60%;
+    padding: 1em;
+    margin-right: 3em;
+    float: right;
+}
+
+.speech-bubble-right:after {
+	content: '';
+	position: absolute;
+	right: 0;
+	top: 50%;
+	width: 0;
+	height: 0;
+	border: 0.625em solid transparent;
+	border-left-color: #9292fc;
+	border-right: 0;
+	margin-top: -0.625em;
+	margin-right: -0.625em;
 }

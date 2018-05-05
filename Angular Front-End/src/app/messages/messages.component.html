@@ -1,14 +1,30 @@
 <!--Panel-->
 <div class="card chatbox" *ngIf="auth.user | async as user">
-    <h3 class="card-header primary-color white-text">Chat</h3>
+    <h3 class="card-header primary-color white-text">Chat: {{selectedUser?.displayName}}</h3>
     <div class="card-body">
-        <h4 class="card-title">Special title treatment</h4>
-        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        <ul id="message-list">
+            <li class="speech-bubble-left">message1</li>
+            <br>
+            <br>
+            <li class="speech-bubble-right">message2</li>
+        </ul>
     </div>
-    <div class="md-form message">
-        <input [(ngModel)]="message" mdbActive type="text" id="message" class="form-control element1">
-        <label for="message" class="element1">Message</label>
-        <button id="btn-send-message" type="button" class="btn btn-primary waves-light element2" (click)="addMessage(user.email)" mdbRippleRadius>Send</button>
+    <div class="md-form">
+        <div class="row">
+            <div class="col-8 pl-5 pr-4">
+                <input [(ngModel)]="message" mdbActive type="text" id="message" class="form-control">
+                <label class="pl-5" for="message">Message</label>
+            </div>
+            <div class="col-2">
+                <label id="btn-addfile" class="btn btn-sm btn-primary waves-light btn-file">
+                    Browse
+                    <input type="file" style="display: none;">
+                </label>
+            </div>
+            <div class="col-2">
+                <button id="btn-send-message" type="button" class="btn btn-sm mt-2 ml-1 btn-primary waves-light" (click)="postMessage()" mdbRippleRadius>Send</button>
+            </div>
+        </div>
     </div>
 </div>
 <!--/.Panel-->

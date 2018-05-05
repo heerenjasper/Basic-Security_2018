@@ -23,3 +23,8 @@ ul {
 #contact-list-item:active {
     background-color: rgba($color: #575757, $alpha: .1);
 }
+
+.body {
+    max-height:600px;
+    overflow-y:scroll;
+}

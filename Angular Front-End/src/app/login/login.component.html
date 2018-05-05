@@ -33,7 +33,7 @@
 
 <!-- User logged in -->
 <ng-template #authenticated>
-<div *ngIf="auth.user | async as user">
+<div *ngIf="auth.user | async as user" id="userWelcome">
     <div class="text-center">
         <h3>Hello, {{ user.displayName }}</h3>
     </div>
