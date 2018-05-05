@@ -1,31 +1,24 @@
 package be.pxl.AON11.basicsecurity.utils;
 
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import javax.imageio.ImageIO;
 
-/**
- * Deze klasse encrypteert text in PNG afbeeldingen en kan ook tekst uit
- * afbeeldingen lezen.
- * 
- * @author Bram Swinnen
- *
- */
 public abstract class PNG_Cryptor {
 
 	/**
-	 * Hoofdmethode om een bericht aan een foto toe te voegen.
-	 * 
+	 * Adds a message to a picture.
+	 *
 	 * @param pathToPicture
-	 *            path naar de foto
+	 *            path to the pic
 	 * @param message
-	 *            bericht om in de foto te encrypteren
+	 *            message to encrypt in the pic
 	 * @param destination
-	 *            de locatie van de output foto
+	 *            location of image output
 	 * @param keyLocation
-	 *            de locatie van de key
+	 *            location of key
 	 */
 	public static void addMessageToPicture(String pathToPicture, String message, String destination, String keyLocation,
 			String pathToPublicKey2) {
@@ -38,11 +31,11 @@ public abstract class PNG_Cryptor {
 	}
 
 	/**
-	 * Methode om een BufferedImage in te lezen.
-	 * 
+	 * Methode to load a BufferedImage
+	 *
 	 * @param pathToPicture
-	 *            path naar de foto
-	 * @return het BufferedImage object
+	 *            path to the picture
+	 * @return the BufferedImage object
 	 */
 	private static BufferedImage loadPicture(String pathToPicture) {
 		if (pathToPicture.endsWith(".png")) {
@@ -56,11 +49,11 @@ public abstract class PNG_Cryptor {
 	}
 
 	/**
-	 * Haalt de pixels array uit een BufferedImage.
+	 * Gets the pixels array from a BufferedImage
 	 * 
 	 * @param pic
-	 *            het BufferedImage object
-	 * @return een int array met daarin de pixels
+	 *            the BufferedImage object
+	 * @return a int array with pixels
 	 */
 	private static int[] getPixels(BufferedImage pic) {
 		int width = pic.getWidth();
@@ -71,33 +64,33 @@ public abstract class PNG_Cryptor {
 	}
 
 	/**
-	 * Schrijft het bericht in de pixels array.
+	 * Writes the message into the pixels
 	 * 
 	 * @param pixels
-	 *            de pixels array
+	 *            the pixels array
 	 * @param data
-	 *            de tekst als een byte array
+	 *            the text as a byte array
 	 */
 	private static void writeData(int[] pixels, byte[] data) {
 		int pixelCounter = 0;
-		int kleurCounter = 0;
-		byte[] lengte = toBinary(data.length);
+		int colorCounter = 0;
+		byte[] length = toBinary(data.length);
 		for (int i = 0; i < 32; i++) {
-			pixels[pixelCounter] = setIntOn(pixels[pixelCounter], kleurCounter, lengte[i]);
-			kleurCounter++;
-			if (kleurCounter == 3) {
-				kleurCounter = 0;
+			pixels[pixelCounter] = setIntOn(pixels[pixelCounter], colorCounter, length[i]);
+			colorCounter++;
+			if (colorCounter == 3) {
+				colorCounter = 0;
 				pixelCounter++;
 			}
 		}
 		pixelCounter++;
-		kleurCounter = 0;
+		colorCounter = 0;
 		for (int i = 0; i < data.length; i++) {
 			for (int bit = 0; bit < 7; bit++) {
-				pixels[pixelCounter] = setIntOn(pixels[pixelCounter], kleurCounter, getBit(data[i], bit));
-				kleurCounter++;
-				if (kleurCounter == 3) {
-					kleurCounter = 0;
+				pixels[pixelCounter] = setIntOn(pixels[pixelCounter], colorCounter, getBit(data[i], bit));
+				colorCounter++;
+				if (colorCounter == 3) {
+					colorCounter = 0;
 					pixelCounter++;
 				}
 			}
@@ -114,27 +107,27 @@ public abstract class PNG_Cryptor {
 	}
 
 	/**
-	 * Zet de laatste bit van de R, G of B van een pixel op 1 of 0
+     * Set the last bit of the RGB from a pixel to 1 or 0
 	 * 
 	 * @param pixel
-	 *            de waarde van de meegegeven pixel
-	 * @param kleur
-	 *            de kleur die je wilt veranderen (0 = rood, 1 = groen, 2 =
-	 *            blauw)
-	 * @param waarde
-	 *            de waarde die je wilt setten (1 of 0)
+	 *            value to give to the pixel
+	 * @param color
+     *            the color you want to change (0 = red, 1 = green, 2 =
+     * 	 *            blue)
+	 * @param value
+	 *            the value you want to set (1 of 0)
 	 * @return
 	 */
-	private static int setIntOn(int pixel, int kleur, int waarde) {
+	private static int setIntOn(int pixel, int color, int value) {
 		int red = getRed(pixel);
 		int green = getGreen(pixel);
 		int blue = getBlue(pixel);
-		if (kleur == 0) {
-			red = setLastBitTo(red, waarde);
-		} else if (kleur == 1) {
-			green = setLastBitTo(green, waarde);
-		} else if (kleur == 2) {
-			blue = setLastBitTo(blue, waarde);
+		if (color == 0) {
+			red = setLastBitTo(red, value);
+		} else if (color == 1) {
+			green = setLastBitTo(green, value);
+		} else if (color == 2) {
+			blue = setLastBitTo(blue, value);
 		}
 
 		int newPixel = red;
@@ -144,12 +137,12 @@ public abstract class PNG_Cryptor {
 	}
 
 	/**
-	 * Zet de laatse bit van 'original' op 1 of 0
+     * Set the last bit from the 'original' to 1 or 0
 	 * 
 	 * @param original
-	 *            de int die je wilt veranderen
+     *            the int that you want to change
 	 * @param value
-	 *            de waarde (0 of 1)
+	 *            the value 0 or zero
 	 * @return
 	 */
 	private static int setLastBitTo(int original, int value) {
@@ -161,18 +154,18 @@ public abstract class PNG_Cryptor {
 	}
 
 	/**
-	 * Returnt de nde bit van 'nummer'.
+     * Returns the nth bit of 'number'
 	 * 
-	 * @param nummer
+	 * @param number
 	 * @param n
 	 * @return
 	 */
-	private static int getBit(int nummer, int n) {
-		return ((nummer >> n) & 1);
+	private static int getBit(int number, int n) {
+		return ((number >> n) & 1);
 	}
 
 	/**
-	 * Returnt het rode gedeelte van de RGB van 'pixel'.
+     * Returns the red value from the RGB of a pixel.
 	 * 
 	 * @param pixel
 	 * @return
@@ -182,7 +175,7 @@ public abstract class PNG_Cryptor {
 	}
 
 	/**
-	 * Returnt het groene gedeelte van de RGB van 'pixel'.
+     * Returns the green value from the RGB of a pixel.
 	 * 
 	 * @param pixel
 	 * @return
@@ -192,7 +185,7 @@ public abstract class PNG_Cryptor {
 	}
 
 	/**
-	 * Returnt het blauwe gedeelte van de RGB van 'pixel'.
+     * Returns the blue value from the RGB of a pixel.
 	 * 
 	 * @param pixel
 	 * @return
@@ -225,51 +218,51 @@ public abstract class PNG_Cryptor {
 	}
 
 	/**
-	 * Haalt de ge�ncrypteerde bytes uit de pixels array.
+     * Gets the encrypted bytes from the pixels array.
 	 * 
 	 * @param pixels
 	 * @return
 	 */
 	private static byte[] getBytesFromPixels(int[] pixels) {
-		byte[] lengteBits = new byte[32];
-		int teller = 0;
+		byte[] lengthBits = new byte[32];
+		int counter = 0;
 		for (int i = 0; i < 9; i++) {
-			lengteBits[teller] = (byte) getBit(getRed(pixels[i]), 0);
-			teller++;
-			lengteBits[teller] = (byte) getBit(getGreen(pixels[i]), 0);
-			teller++;
-			lengteBits[teller] = (byte) getBit(getBlue(pixels[i]), 0);
-			teller++;
+			lengthBits[counter] = (byte) getBit(getRed(pixels[i]), 0);
+			counter++;
+			lengthBits[counter] = (byte) getBit(getGreen(pixels[i]), 0);
+			counter++;
+			lengthBits[counter] = (byte) getBit(getBlue(pixels[i]), 0);
+			counter++;
 		}
-		lengteBits[teller] = (byte) getBit(getRed(pixels[10]), 0);
-		teller++;
-		lengteBits[teller] = (byte) getBit(getGreen(pixels[10]), 0);
-		teller++;
-		reverse(lengteBits);
-		int lengte = bitsToInt(lengteBits);
-		byte[] bits = new byte[lengte * 7];
-		int messagecounter = 0;
-		for (int i = 11; i < 11 + (lengte * 7 / 3); i++) {
-			bits[messagecounter] = (byte) getBit(getRed(pixels[i]), 0);
-			messagecounter++;
-			bits[messagecounter] = (byte) getBit(getGreen(pixels[i]), 0);
-			messagecounter++;
-			bits[messagecounter] = (byte) getBit(getBlue(pixels[i]), 0);
-			messagecounter++;
+		lengthBits[counter] = (byte) getBit(getRed(pixels[10]), 0);
+		counter++;
+		lengthBits[counter] = (byte) getBit(getGreen(pixels[10]), 0);
+		counter++;
+		reverse(lengthBits);
+		int length = bitsToInt(lengthBits);
+		byte[] bits = new byte[length * 7];
+		int messageCounter = 0;
+		for (int i = 11; i < 11 + (length * 7 / 3); i++) {
+			bits[messageCounter] = (byte) getBit(getRed(pixels[i]), 0);
+			messageCounter++;
+			bits[messageCounter] = (byte) getBit(getGreen(pixels[i]), 0);
+			messageCounter++;
+			bits[messageCounter] = (byte) getBit(getBlue(pixels[i]), 0);
+			messageCounter++;
 		}
-		byte[] bytes = new byte[lengte];
-		int bytecounter = 0;
+		byte[] bytes = new byte[length];
+		int byteCounter = 0;
 		for (int i = 0; i < bits.length; i += 7) {
-			String stuk = "" + bits[i] + bits[i + 1] + bits[i + 2] + bits[i + 3] + bits[i + 4] + bits[i + 5]
+			String piece = "" + bits[i] + bits[i + 1] + bits[i + 2] + bits[i + 3] + bits[i + 4] + bits[i + 5]
 					+ bits[i + 6];
-			bytes[bytecounter] = Byte.parseByte(new StringBuilder(stuk).reverse().toString(), 2);
-			bytecounter++;
+			bytes[byteCounter] = Byte.parseByte(new StringBuilder(piece).reverse().toString(), 2);
+			byteCounter++;
 		}
 		return bytes;
 	}
 
 	/**
-	 * Leest alle tekst uit een foto.
+	 * Reads the text from a picture.
 	 * 
 	 * @param pathToPicture
 	 * @return
@@ -280,7 +273,7 @@ public abstract class PNG_Cryptor {
 	}
 
 	/**
-	 * Converteert een string array naar een byte array.
+     * Converts a string array to a byte array
 	 * 
 	 * @param s
 	 * @return
@@ -308,7 +301,7 @@ public abstract class PNG_Cryptor {
 	}
 
 	/**
-	 * Converteert een byte array naar een string.
+     * Converts a byte array to a string
 	 * 
 	 * @param array
 	 * @return
@@ -323,7 +316,7 @@ public abstract class PNG_Cryptor {
 	}
 
 	/**
-	 * Zet een array pixels om tot een BufferedImage.
+     * Set a pixel array to a BufferedImage.
 	 * 
 	 * @param pixels
 	 * @param width
@@ -340,11 +333,11 @@ public abstract class PNG_Cryptor {
 		return image;
 	}
 
-	/**
-	 * Schrijft de BufferedImage naar de destination path
+    /**
+	 * Writes the BufferedImage to the destination path
 	 * 
 	 * @param image
-	 * @param name
+	 * @param destination
 	 */
 	private static void writeImg(BufferedImage image, String destination) {
 		try {

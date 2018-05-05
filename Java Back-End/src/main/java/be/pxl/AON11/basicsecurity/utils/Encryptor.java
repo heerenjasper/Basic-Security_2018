@@ -22,7 +22,7 @@ public abstract class Encryptor {
 	}
 
 	/**
-	 * Encrypteert de hash met private key 1, en saved het resultaat in een file
+	 * Encrypts the hash with the private key 1, saves the result in a file after hashing.
 	 * (File_3)
 	 * 
 	 * @param message

@@ -25,7 +25,7 @@ public abstract class Decryptor {
 	}
 
 	public static boolean checkIfHashIsCorrect(String pathToOutputPicture) {
-		String inputHash = leesDecrypteerEnPrintHash(PathProvider.getPathToFile3(), PathProvider.getPathToPublicKey1());
+		String inputHash = readDecryptAndPrintHash(PathProvider.getPathToFile3(), PathProvider.getPathToPublicKey1());
 		String outputHash = MD5.getHash(getMessage(pathToOutputPicture));
 		return inputHash.equals(outputHash);
 	}
@@ -36,7 +36,8 @@ public abstract class Decryptor {
 		System.out.println("Valid HASH? : " + checkIfHashIsCorrect(pathToOutputPicture));
 	}
 
-	private static String leesDecrypteerEnPrintHash(String fileToHash, String puKey1) {
+
+	private static String readDecryptAndPrintHash(String fileToHash, String puKey1) {
 		try {
 			byte[] hash = new byte[128];
 			BufferedReader br = new BufferedReader(new FileReader(new File(fileToHash)));
@@ -44,8 +45,8 @@ public abstract class Decryptor {
 				hash[i] = Byte.valueOf(br.readLine());
 			}
 			br.close();
-			byte[] echteHash = RSA_Cryptor.decryptPublic(puKey1, hash);
-			return new String(echteHash);
+			byte[] realHash = RSA_Cryptor.decryptPublic(puKey1, hash);
+			return new String(realHash);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

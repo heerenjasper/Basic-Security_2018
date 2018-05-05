@@ -56,12 +56,12 @@ public abstract class AES_Cryptor {
 				key[i] = Byte.valueOf(br.readLine());
 			}
 			br.close();
-			byte[] echtekey = RSA_Cryptor.decryptPrivate(prkey, key);
-			String keyString = new String(echtekey);
+			byte[] realKey = RSA_Cryptor.decryptPrivate(prkey, key);
+			String keyString = new String(realKey);
 			IvParameterSpec iv = new IvParameterSpec(keyString.substring(16, 32).getBytes("UTF-8"));
-			SecretKeySpec skeySpec = new SecretKeySpec(keyString.substring(0, 16).getBytes("UTF-8"), "AES");
+			SecretKeySpec secretKeySpec = new SecretKeySpec(keyString.substring(0, 16).getBytes("UTF-8"), "AES");
 			Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
-			cipher.init(Cipher.DECRYPT_MODE, skeySpec, iv);
+			cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, iv);
 			byte[] original = cipher.doFinal(DatatypeConverter.parseBase64Binary(encrypted));
 
 			return new String(original);

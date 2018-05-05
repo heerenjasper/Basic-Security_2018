@@ -3,14 +3,17 @@ package be.pxl.AON11.basicsecurity.controller;
 import be.pxl.AON11.basicsecurity.model.File;
 import be.pxl.AON11.basicsecurity.service.FileService;
 import be.pxl.AON11.basicsecurity.service.StorageServiceImpl;
+import be.pxl.AON11.basicsecurity.utils.Decryptor;
 import be.pxl.AON11.basicsecurity.utils.Encryptor;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Optional;
@@ -89,7 +92,6 @@ public class FileController {
 
     @PostMapping("/encrypt/")
     public ResponseEntity<File> encryptFile(@RequestParam("file") MultipartFile file, @RequestPart String message) {
-
         // Save file
         storageService.store(file, "basic-files/", "file_1");
 
@@ -106,4 +108,22 @@ public class FileController {
         return new ResponseEntity<File>(responseFile, HttpStatus.OK);
     }
 
+    @GetMapping("/decrypt/{fileId}")
+    public ResponseEntity<String> decryptFile(@PathVariable Integer fileId) {
+
+        Optional<File> fileFromRepo = fileService.findFileById(fileId);
+        String decryptedMessage = "Not Found";
+
+        // load file
+        if(fileFromRepo.isPresent()) {
+            Resource file = storageService.loadFile(fileFromRepo.get().getHref());
+            try {
+                decryptedMessage = Decryptor.decrypt(file.getURI().getPath());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return new ResponseEntity<>(decryptedMessage, HttpStatus.OK);
+    }
 }

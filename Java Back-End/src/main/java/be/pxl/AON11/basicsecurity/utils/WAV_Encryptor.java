@@ -13,8 +13,7 @@ import javax.sound.sampled.*;
 /**
  * Deze klasse verstopt text in muziek (.WAV) bestanden en kan ook tekst uit
  * muziek lezen.
- * 
- * @author Branco Dortangs
+ *
  *
  */
 public abstract class WAV_Encryptor {
