@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 
-interface Message {
+/* interface Message {
   fileUrl: string;
 }
+*/
 
 interface User {
   uid: string;

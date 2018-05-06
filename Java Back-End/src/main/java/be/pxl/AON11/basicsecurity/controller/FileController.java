@@ -8,14 +8,20 @@ import be.pxl.AON11.basicsecurity.utils.Encryptor;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletResponse;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Path;
 import java.util.Optional;
 
 /**
@@ -23,16 +29,20 @@ import java.util.Optional;
  */
 @RestController
 @RequestMapping("/api/files")
+@CrossOrigin(origins = "http://localhost:4200")
 public class FileController {
 
     //Service will do all data retrieval/manipulation work
     private final FileService fileService;
     private StorageServiceImpl storageService;
 
+    private final ResourceLoader resourceLoader;
+
     @Autowired
-    public FileController(FileService fileService) {
+    public FileController(FileService fileService, ResourceLoader resourceLoader) {
         this.fileService = fileService;
         this.storageService = new StorageServiceImpl();
+        this.resourceLoader = resourceLoader;
     }
 
     @GetMapping("/{fileId}")
@@ -43,6 +53,27 @@ public class FileController {
             return new ResponseEntity<File>(file.get(), HttpStatus.OK);
         } else {
             return new ResponseEntity<File>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @RequestMapping(value = "/image/{fileId}", method = RequestMethod.GET, produces = "image/png")
+    public @ResponseBody byte[] getFile(@PathVariable Integer fileId, final HttpServletResponse response) {
+        Optional<File> file = fileService.findFileById(fileId);
+
+        if (file.isPresent()) {
+            Resource resource = storageService.loadResource(file.get().getHref());
+            try {
+                InputStream inputStream = resource.getInputStream();
+                BufferedImage img = ImageIO.read(inputStream);
+                ByteArrayOutputStream bao = new ByteArrayOutputStream();
+                ImageIO.write(img, "png", bao);
+
+                return bao.toByteArray();
+            } catch (IOException e) {
+                return null;
+            }
+        } else {
+            return null;
         }
     }
 
@@ -93,16 +124,17 @@ public class FileController {
     @PostMapping("/encrypt/")
     public ResponseEntity<File> encryptFile(@RequestParam("file") MultipartFile file, @RequestPart String message) {
         // Save file
-        storageService.store(file, "basic-files/", "file_1");
+        storageService.store(file, "basic-files/", "file_1.png");
+        storageService.store(file, "encoded-files/", "file_1.png");
 
         // Encrypt file
-        String fullPath = storageService.createFullPath("basic-files/", "file_1");
-        String output = storageService.createFullPath("encoded-files/", "file_1");
+        String fullPath = storageService.createFullPath("basic-files/", "file_1.png");
+        String output = storageService.createFullPath("encoded-files/", "file_1.png");
         Encryptor.encrypt(message, fullPath, output);
 
         File responseFile = new File();
         responseFile.setExtension(FilenameUtils.getExtension(file.getOriginalFilename()));
-        responseFile.setHref("resources/encoded-files/file_1" + FilenameUtils.getExtension(file.getOriginalFilename()));
+        responseFile.setHref("resources/upload-dir/encoded-files/file_1." + FilenameUtils.getExtension(file.getOriginalFilename()));
         fileService.saveFile(responseFile);
 
         return new ResponseEntity<File>(responseFile, HttpStatus.OK);
@@ -116,12 +148,8 @@ public class FileController {
 
         // load file
         if(fileFromRepo.isPresent()) {
-            Resource file = storageService.loadFile(fileFromRepo.get().getHref());
-            try {
-                decryptedMessage = Decryptor.decrypt(file.getURI().getPath());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            Path file = storageService.loadFile(fileFromRepo.get().getHref());
+                decryptedMessage = Decryptor.decrypt(file.toString());
         }
 
         return new ResponseEntity<>(decryptedMessage, HttpStatus.OK);

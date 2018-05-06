@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, Input} from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { Observable } from 'rxjs/Observable';
 import { AuthService } from '../core/auth.service';
@@ -25,10 +25,8 @@ export class ContactsComponent implements OnInit {
 
   constructor(private afs: AngularFirestore,
   private authService: AuthService) { 
-
     this.usersCollection = this.afs.collection<User>('users');
     this.users = this.usersCollection.valueChanges();
-
   }
   
   ngOnInit() {    

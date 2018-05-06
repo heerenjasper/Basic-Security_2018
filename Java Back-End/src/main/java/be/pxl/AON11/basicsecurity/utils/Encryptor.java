@@ -9,6 +9,8 @@ public abstract class Encryptor {
 	public static void encrypt(String message, String pathToInput, String pathToOutput) {
 		RSA_Cryptor.generateKeyPair(PathProvider.getPathToPrivateKey1(), PathProvider.getPathToPublicKey1());
 		RSA_Cryptor.generateKeyPair(PathProvider.getPathToPrivateKey2(), PathProvider.getPathToPublicKey2());
+		System.out.println("Path to input : " + pathToInput);
+		System.out.println("Path to output : " + pathToOutput);
 		if (pathToInput.endsWith(".png")) {
 			PNG_Cryptor.addMessageToPicture(pathToInput, message, pathToOutput, PathProvider.getPathToFile2(),
 					PathProvider.getPathToPublicKey2());

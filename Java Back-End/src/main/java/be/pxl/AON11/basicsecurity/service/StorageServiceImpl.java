@@ -43,9 +43,13 @@ public class StorageServiceImpl {
         return Paths.get(fullPath.toString(), path, filename).toString();
     }
 
-    public Resource loadFile(String filename) {
+    public Path loadFile(String filename) {
+        return Paths.get("src/main/").resolve(filename);
+    }
+
+    public Resource loadResource(String fileName) {
         try {
-            Path file = Paths.get("src/main/resources").resolve(filename);
+            Path file = Paths.get("src/main/").resolve(fileName);
             Resource resource = new UrlResource(file.toUri());
             if (resource.exists() || resource.isReadable()) {
                 return resource;

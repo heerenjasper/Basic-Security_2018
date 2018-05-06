@@ -30,7 +30,7 @@ export class MessagesComponent implements OnInit {
   date = new Date();
 
   postMessage() {
-    this.messageService.postMessage(this.message, this.selectedFile)
+    this.messageService.encryptMessage(this.message, this.selectedFile)
     .subscribe(event => {
       if (event.type === HttpEventType.Response && event.body) {
         this.fileURL = 'via.placeholder.com/350x150';
@@ -43,6 +43,7 @@ export class MessagesComponent implements OnInit {
   selectSingleFile(event) {
     const fileList = event.target.files;
     this.selectedFile = fileList.item(0);
+    console.log('File selected', this.selectedFile.name);
   }
 
   addMessage() {

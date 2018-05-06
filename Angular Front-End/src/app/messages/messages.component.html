@@ -18,7 +18,7 @@
             <div class="col-2">
                 <label id="btn-addfile" class="btn btn-sm btn-primary waves-light btn-file">
                     Browse
-                    <input type="file" style="display: none;">
+                    <input type="file" style="display: none;" (change)="selectSingleFile($event)">
                 </label>
             </div>
             <div class="col-2">

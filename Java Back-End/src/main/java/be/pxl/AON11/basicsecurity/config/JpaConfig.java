@@ -11,4 +11,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
         basePackages = "be.pxl.AON11.basicsecurity.repository"
 )
 public class JpaConfig {
+
+
 }
