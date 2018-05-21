@@ -26,14 +26,13 @@ export class MessagesComponent implements OnInit {
   @Input() selectedUser: User;
   message = "";
   selectedFile: File;
-  fileURL = "";
-  date = new Date();
+  fileId: number;
 
   postMessage() {
     this.messageService.encryptMessage(this.message, this.selectedFile)
     .subscribe(event => {
       if (event.type === HttpEventType.Response && event.body) {
-        this.fileURL = 'via.placeholder.com/350x150';
+        this.fileId = event.body['id'];
         this.addMessage();
       }
     });
@@ -50,8 +49,7 @@ export class MessagesComponent implements OnInit {
     // Add a new document with a generated id.
     if (this.auth.isAuthenticated) {
       this.afs.collection("messages").add({
-        fileURL: this.fileURL,
-        time: this.date.getTime
+        fileId: this.fileId
       })
       .then(function(docRef) {
         console.log("Document written with ID: ", docRef.id);
