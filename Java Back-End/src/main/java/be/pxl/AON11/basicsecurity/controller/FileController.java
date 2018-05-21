@@ -23,6 +23,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Path;
 import java.util.Optional;
+import java.util.Random;
 
 /**
  * Created by Ebert Joris on 28/03/2018.
@@ -123,18 +124,20 @@ public class FileController {
 
     @PostMapping("/encrypt/")
     public ResponseEntity<File> encryptFile(@RequestParam("file") MultipartFile file, @RequestPart String message) {
+        Integer randomNumber = new Random().nextInt();
+        String fileName = "file_" + randomNumber + ".png";
         // Save file
-        storageService.store(file, "basic-files/", "file_1.png");
-        storageService.store(file, "encoded-files/", "file_1.png");
+        storageService.store(file, "basic-files/", fileName);
+        storageService.store(file, "encoded-files/", fileName);
 
         // Encrypt file
-        String fullPath = storageService.createFullPath("basic-files/", "file_1.png");
-        String output = storageService.createFullPath("encoded-files/", "file_1.png");
+        String fullPath = storageService.createFullPath("basic-files/", fileName);
+        String output = storageService.createFullPath("encoded-files/", fileName);
         Encryptor.encrypt(message, fullPath, output);
 
         File responseFile = new File();
         responseFile.setExtension(FilenameUtils.getExtension(file.getOriginalFilename()));
-        responseFile.setHref("resources/upload-dir/encoded-files/file_1." + FilenameUtils.getExtension(file.getOriginalFilename()));
+        responseFile.setHref("resources/upload-dir/encoded-files/" + fileName);
         fileService.saveFile(responseFile);
 
         return new ResponseEntity<File>(responseFile, HttpStatus.OK);

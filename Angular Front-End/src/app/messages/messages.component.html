@@ -2,11 +2,13 @@
 <div class="card chatbox" *ngIf="auth.user | async as user">
     <h3 class="card-header primary-color white-text">Chat: {{selectedUser?.displayName}}</h3>
     <div class="card-body">
-        <ul id="message-list">
-            <li class="speech-bubble-left">message1</li>
-            <br>
-            <br>
-            <li class="speech-bubble-right">message2</li>
+        <ul id="message-list" *ngIf="selectedUserMessages != null">
+            <li *ngFor="let message of selectedUserMessages"
+            [class.speech-bubble-right]="message.senderId == currentUser.uid"
+            [class.speech-bubble-left]="message.senderId != currentUser.uid">
+                <img [src]="getImagePath(message)">
+            </li>
+            <br><br>
         </ul>
     </div>
     <div class="md-form">

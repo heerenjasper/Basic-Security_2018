@@ -22,6 +22,7 @@ export class ContactsComponent implements OnInit {
   users: Observable<User[]>;
   currentUser: User;
   @Output() selectedUserEvent = new EventEmitter<User>();
+  @Output() selectedUserMessagesEvent = new EventEmitter<Object[]>();
 
   constructor(private afs: AngularFirestore,
   private authService: AuthService) { 
@@ -39,9 +40,23 @@ export class ContactsComponent implements OnInit {
 
   selectChat(user: User) {
     this.selectedUserEvent.emit(user);
+    this.selectedUserMessagesEvent.emit(this.getMessages(user));
     console.log(user.displayName);
   }
 
-  
+  getMessages(selectedUser: User): Object[] {
+    const data: Object[] = new Array<Object>();
+    this.afs.collection("messages").ref
+      //.where("senderId", "==", this.currentUser.uid)
+      //.where("receiverId", "==", selectedUser.uid)
+      .get()
+      .then(function(querySnapshot) {
+        return querySnapshot.forEach(function(doc) {
+          data.push(doc.data());
+          console.log(doc.data());
+        });
+    });
+    return data;
+  }
 
 }

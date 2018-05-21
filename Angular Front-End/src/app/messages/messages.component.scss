@@ -1,6 +1,7 @@
 .chatbox {
     min-height: 85vh;
-    max-height: 85vh;
+	max-height: 85vh;
+	height: 85vh;
 }
 
 .picture {
@@ -15,13 +16,26 @@
 
 #message-list {
     list-style: none;
+	overflow: scroll; 
+	overflow-x: hidden;
+	height: 55vh;
+}
+
+#message-list li {
+	margin-top: 1em;
+	display: block;
+}
+
+#message-list li img {
+	max-width: 50%;
+	float: right;
 }
 
 .speech-bubble-left {
 	position: relative;
 	background: #f06b78;
     border-radius: .4em;
-    max-width: 60%;
+	max-width: 60%;
     padding: 1em;
     float: left;
 }

@@ -1,4 +1,5 @@
 <div id="chat-wrapper" class="row">
-    <app-contacts (selectedUserEvent)="receiveUser($event)" class="col-4"></app-contacts>
-    <app-messages [selectedUser]="selectedUser" class="col-8"></app-messages>
+    <app-contacts (selectedUserEvent)="receiveUser($event)" (selectedUserMessagesEvent)="receiveMessages($event)" class="col-4"></app-contacts>
+    <app-messages [selectedUser]="selectedUser"
+                  [selectedUserMessages]="selectedUserMessages" class="col-8"></app-messages>
 </div>

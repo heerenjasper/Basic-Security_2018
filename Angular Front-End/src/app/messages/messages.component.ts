@@ -18,21 +18,28 @@ interface User {
 })
 export class MessagesComponent implements OnInit {
 
-  constructor(private afs: AngularFirestore, private auth: AuthService, private messageService: MessageService) { }
-
-  ngOnInit() {
-  }
-
   @Input() selectedUser: User;
+  @Input() selectedUserMessages: Object[];
+  currentUser: User;
   message = "";
   selectedFile: File;
-  fileId: number;
+  fileId: string;
+
+  constructor(private afs: AngularFirestore,
+      private auth: AuthService,
+      private messageService: MessageService) { }
+
+  ngOnInit() {
+    this.auth.user.subscribe(user => {
+      this.currentUser = user;
+    });
+  }
 
   postMessage() {
     this.messageService.encryptMessage(this.message, this.selectedFile)
     .subscribe(event => {
       if (event.type === HttpEventType.Response && event.body) {
-        this.fileId = event.body['id'];
+        this.fileId = JSON.parse(event.body.toString()).id;
         this.addMessage();
       }
     });
@@ -48,8 +55,11 @@ export class MessagesComponent implements OnInit {
   addMessage() {
     // Add a new document with a generated id.
     if (this.auth.isAuthenticated) {
+      console.log('fileID2 = ', this.fileId);
       this.afs.collection("messages").add({
-        fileId: this.fileId
+        fileId: this.fileId,
+        senderId: this.currentUser.uid,
+        receiverId: this.selectedUser.uid
       })
       .then(function(docRef) {
         console.log("Document written with ID: ", docRef.id);
@@ -58,6 +68,10 @@ export class MessagesComponent implements OnInit {
         console.error("Error adding document: ", error);
       });
     }
+  }
+
+  getImagePath(object: Object): String {
+    return 'http://localhost:8081/api/files/image/' + object['fileId'];
   }
 
 }

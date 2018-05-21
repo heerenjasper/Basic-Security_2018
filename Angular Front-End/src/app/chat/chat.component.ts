@@ -23,6 +23,7 @@ export class ChatComponent implements OnInit {
   //private messages: Message[];
 
   selectedUser: User;
+  selectedUserMessages: Object[];
 
   constructor() { }
 
@@ -30,6 +31,10 @@ export class ChatComponent implements OnInit {
 
   receiveUser($event: User) {
     this.selectedUser = $event
+  }
+
+  receiveMessages($event: Object[]) {
+    this.selectedUserMessages = $event;
   }
 
 }
